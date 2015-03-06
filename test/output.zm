@@ -1,0 +1,140 @@
+/******************************************************************************\
+FILE:           output.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Defines the formats of output table(s).
+
+
+HISTORY:
+2013-01-11 TV   Created.
+
+\******************************************************************************/
+
+
+// Familiarization output table record.
+record FamOutput
+{
+    int         lt;             // looking time [ms]
+    int         nlt;            // not looking time [ms]
+    int         lookaways;      // number of times looked away
+}
+
+
+// Test output table record.
+record TestOutput
+{
+    int         trialnum;       // trial number
+
+    TestGroup   lang;           // language
+    Condition   cond;           // condition
+
+    int         lt;             // looking time [ms]
+    int         nlt;            // not looking time [ms]
+    int         lookaways;      // number of times looked away
+}
+
+
+// Timestamp table output record.
+record TimeStampOutput
+{
+    int         trialnum;       // trial number
+    int         d;              // duration (looking or not looking)
+    string      label;          // L:looking, NL:not looking
+}
+
+
+// Familiarization output table.
+FamOutput[..] fam_output;
+
+
+// Test output table.
+TestOutput[..] test_output;
+
+
+// Timestamp output table.
+TimeStampOutput[..] timestamp_output;
+
+
+//------------------------------------------------------------------------------
+
+
+// Appends one row of data to familiarization output table.
+void fam_output_append(FamOutput data)
+{
+    fam_output.size = fam_output.size + 1;
+    fam_output[fam_output.size-1] = data;
+}
+
+
+// Writes familiarization output table contents to CSV file and clears 
+// the table.
+void fam_output_save()
+{
+    // Append table to CSV file (create if non-existent). The filename format
+    // is: <dbname>/<dbnum>/<expname>/<phasename>/ses<sesid>-<tblnum>.csv
+    string fn = expdb.experiment.session.create_table(namespace_name, 1);
+    fam_output.append(fn, namespace_name + ": familiarization results");
+    fam_output.size = 0;
+}
+
+
+// Appends one row of data to test output table.
+void test_output_append(TestOutput data)
+{
+    test_output.size = test_output.size + 1;
+    test_output[test_output.size-1] = data;
+}
+
+
+// Writes test output table contents to CSV file and clears the table.
+void test_output_save()
+{
+    // Append table to CSV file (create if non-existent). The filename format
+    // is: <dbname>/<dbnum>/<expname>/<phasename>/ses<sesid>-<tblnum>.csv
+    string fn = expdb.experiment.session.create_table(namespace_name, 2);
+    test_output.append(fn, namespace_name + ": test results");
+    test_output.size = 0;
+}
+
+
+// Appends array of timestamps to the timestamp output table.
+void timestamp_output_append(int trialnum)
+{
+    int n = timestamp_output.size;
+    int nstamps = timestamp_output.size + control.clock.timestamps.size - 1;
+    timestamp_output.size = nstamps;
+
+    int i;
+    while (n < nstamps)
+    {
+        time lastTimeStamp = control.clock.timestamps[i];
+        timestamp_output[n].trialnum = trialnum;
+        timestamp_output[n].d = 
+            int(control.clock.timestamps[i+1] - lastTimeStamp);
+        timestamp_output[n].label = (i & 1) ? "NL" : "L";
+        n++;
+        i++;
+    }
+}
+
+
+// Writes timestamp output table contents to CSV file.
+void timestamp_output_save(bool test)
+{
+    // Append table to CSV file (create if non-existent). The filename format
+    // is: <dbname>/<dbnum>/<expname>/<phasename>/ses<sesid>-<tblnum>.csv
+    if (test)
+    {
+        string fn = expdb.experiment.session.create_table(namespace_name, 4);
+        timestamp_output.append(fn, namespace_name + ": test looking times");
+    }
+    else
+    {
+        string fn = expdb.experiment.session.create_table(namespace_name, 3);
+        timestamp_output.append(fn, namespace_name + ": familiarization looking times");
+    }
+    timestamp_output.size = 0;
+}

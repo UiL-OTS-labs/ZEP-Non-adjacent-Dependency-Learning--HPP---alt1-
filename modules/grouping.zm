@@ -1,0 +1,35 @@
+/******************************************************************************\
+FILE:           grouping.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Defines groups and handles participant group assignment.
+
+
+HISTORY:
+2013-01-11 TV   Created.
+
+\******************************************************************************/
+
+
+// Symbolic definition of groups.
+enum TestGroup
+{
+    L1,         // familiarize on L1
+    L2,         // familiarize on L2
+}
+
+
+// Assigns participant to a group.
+int assign_participant_to_group()
+{
+    // The group to assign to depends on the numerical part in the 
+    // participant-id. If the participant-id has no numerical part a
+    // group will be selected at random.
+    if (select_group_from_participant_id() != OK)
+        select_group_random();
+
+    return OK;
+}

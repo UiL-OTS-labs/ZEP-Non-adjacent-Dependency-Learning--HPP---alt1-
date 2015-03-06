@@ -1,0 +1,245 @@
+/******************************************************************************\
+FILE:           stimuli.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Defines the formats of item table(s) and provides the actual content of
+the item table(s) i.e. stimulus information.
+
+
+HISTORY:
+2013-01-11 TV   Created.
+
+\******************************************************************************/
+
+
+// Symbolic definition of item type.
+enum ItemType
+{
+    S1,                          // tep-X-lut or tep-X-jik
+    S2,                          // sot-X-jik or sot-X-lut
+}
+
+
+// Symbolic definition of condition.
+enum Condition
+{
+    FAMIL,                        // familiar item
+    NOVEL,                        // novel item
+}
+
+
+// Item table record.
+record TestItem
+{
+    int         id;             // item id
+    ItemType    type;           // item type
+    string      sndfn;          // stimulus sound file
+}
+
+
+// Familiarization item table.
+// Initialized from fam_items1 and fam_items2.
+//   index: item number
+TestItem[..] fam_items;
+
+
+// Familiarization items set 1.
+//   index 1: L1, L2
+//   index 2: item number
+TestItem[..][..] fam_items1 =
+{
+    // L1
+    {
+        // L1: tep-X1..X24-lut
+        {1,     S1,     "tep_01_lut.wav"},
+        {2,     S1,     "tep_02_lut.wav"},
+        {3,     S1,     "tep_03_lut.wav"},
+        {4,     S1,     "tep_04_lut.wav"},
+        {5,     S1,     "tep_05_lut.wav"},
+        {6,     S1,     "tep_06_lut.wav"},
+        {7,     S1,     "tep_07_lut.wav"},
+        {8,     S1,     "tep_08_lut.wav"},
+        {9,     S1,     "tep_09_lut.wav"},
+        {10,    S1,     "tep_10_lut.wav"},
+        {11,    S1,     "tep_11_lut.wav"},
+        {12,    S1,     "tep_12_lut.wav"},
+        {13,    S1,     "tep_13_lut.wav"},
+        {14,    S1,     "tep_14_lut.wav"},
+        {15,    S1,     "tep_15_lut.wav"},
+        {16,    S1,     "tep_16_lut.wav"},
+        {17,    S1,     "tep_17_lut.wav"},
+        {18,    S1,     "tep_18_lut.wav"},
+        {19,    S1,     "tep_19_lut.wav"},
+        {20,    S1,     "tep_20_lut.wav"},
+        {21,    S1,     "tep_21_lut.wav"},
+        {22,    S1,     "tep_22_lut.wav"},
+        {23,    S1,     "tep_23_lut.wav"},
+        {24,    S1,     "tep_24_lut.wav"},
+
+        // L1: sot-X1..X24-jik
+        {25,    S2,     "sot_01_jik.wav"},
+        {26,    S2,     "sot_02_jik.wav"},
+        {27,    S2,     "sot_03_jik.wav"},
+        {28,    S2,     "sot_04_jik.wav"},
+        {29,    S2,     "sot_05_jik.wav"},
+        {30,    S2,     "sot_06_jik.wav"},
+        {31,    S2,     "sot_07_jik.wav"},
+        {32,    S2,     "sot_08_jik.wav"},
+        {33,    S2,     "sot_09_jik.wav"},
+        {34,    S2,     "sot_10_jik.wav"},
+        {35,    S2,     "sot_11_jik.wav"},
+        {36,    S2,     "sot_12_jik.wav"},
+        {37,    S2,     "sot_13_jik.wav"},
+        {38,    S2,     "sot_14_jik.wav"},
+        {39,    S2,     "sot_15_jik.wav"},
+        {40,    S2,     "sot_16_jik.wav"},
+        {41,    S2,     "sot_17_jik.wav"},
+        {42,    S2,     "sot_18_jik.wav"},
+        {43,    S2,     "sot_19_jik.wav"},
+        {44,    S2,     "sot_20_jik.wav"},
+        {45,    S2,     "sot_21_jik.wav"},
+        {46,    S2,     "sot_22_jik.wav"},
+        {47,    S2,     "sot_23_jik.wav"},
+        {48,    S2,     "sot_24_jik.wav"},
+    },
+    // L2
+    {
+        // L2: tep-X1..X24-jik
+        {1,     S1,     "tep_01_jik.wav"},
+        {2,     S1,     "tep_02_jik.wav"},
+        {3,     S1,     "tep_03_jik.wav"},
+        {4,     S1,     "tep_04_jik.wav"},
+        {5,     S1,     "tep_05_jik.wav"},
+        {6,     S1,     "tep_06_jik.wav"},
+        {7,     S1,     "tep_07_jik.wav"},
+        {8,     S1,     "tep_08_jik.wav"},
+        {9,     S1,     "tep_09_jik.wav"},
+        {10,    S1,     "tep_10_jik.wav"},
+        {11,    S1,     "tep_11_jik.wav"},
+        {12,    S1,     "tep_12_jik.wav"},
+        {13,    S1,     "tep_13_jik.wav"},
+        {14,    S1,     "tep_14_jik.wav"},
+        {15,    S1,     "tep_15_jik.wav"},
+        {16,    S1,     "tep_16_jik.wav"},
+        {17,    S1,     "tep_17_jik.wav"},
+        {18,    S1,     "tep_18_jik.wav"},
+        {19,    S1,     "tep_19_jik.wav"},
+        {20,    S1,     "tep_20_jik.wav"},
+        {21,    S1,     "tep_21_jik.wav"},
+        {22,    S1,     "tep_22_jik.wav"},
+        {23,    S1,     "tep_23_jik.wav"},
+        {24,    S1,     "tep_24_jik.wav"},
+
+        // L2: sot-X1..X24-lut
+        {25,    S2,     "sot_01_lut.wav"},
+        {26,    S2,     "sot_02_lut.wav"},
+        {27,    S2,     "sot_03_lut.wav"},
+        {28,    S2,     "sot_04_lut.wav"},
+        {29,    S2,     "sot_05_lut.wav"},
+        {30,    S2,     "sot_06_lut.wav"},
+        {31,    S2,     "sot_07_lut.wav"},
+        {32,    S2,     "sot_08_lut.wav"},
+        {33,    S2,     "sot_09_lut.wav"},
+        {34,    S2,     "sot_10_lut.wav"},
+        {35,    S2,     "sot_11_lut.wav"},
+        {36,    S2,     "sot_12_lut.wav"},
+        {37,    S2,     "sot_13_lut.wav"},
+        {38,    S2,     "sot_14_lut.wav"},
+        {39,    S2,     "sot_15_lut.wav"},
+        {40,    S2,     "sot_16_lut.wav"},
+        {41,    S2,     "sot_17_lut.wav"},
+        {42,    S2,     "sot_18_lut.wav"},
+        {43,    S2,     "sot_19_lut.wav"},
+        {44,    S2,     "sot_20_lut.wav"},
+        {45,    S2,     "sot_21_lut.wav"},
+        {46,    S2,     "sot_22_lut.wav"},
+        {47,    S2,     "sot_23_lut.wav"},
+        {48,    S2,     "sot_24_lut.wav"},
+    },
+};
+
+
+// Familiarization items set 2.
+//   index 1: L1, L2
+//   index 2: item number
+TestItem[..][..] fam_items2 =
+{
+    // L1
+    {
+        // L1: tep-X25..X29-lut
+        {49,    S1,     "tep_25_lut.wav"},
+        {50,    S1,     "tep_26_lut.wav"},
+        {51,    S1,     "tep_27_lut.wav"},
+        {52,    S1,     "tep_28_lut.wav"},
+        {53,    S1,     "tep_29_lut.wav"},
+
+        // L1: sot-X25..X29-jik
+        {54,    S2,     "sot_25_jik.wav"},
+        {55,    S2,     "sot_26_jik.wav"},
+        {56,    S2,     "sot_27_jik.wav"},
+        {57,    S2,     "sot_28_jik.wav"},
+        {58,    S2,     "sot_29_jik.wav"},
+    },
+    // L2
+    {
+        // L2: tep-X25..X29-jik
+        {49,    S1,     "tep_25_jik.wav"},
+        {50,    S1,     "tep_26_jik.wav"},
+        {51,    S1,     "tep_27_jik.wav"},
+        {52,    S1,     "tep_28_jik.wav"},
+        {53,    S1,     "tep_29_jik.wav"},
+
+        // L2: sot-X25..X29-lut
+        {54,    S2,     "sot_25_lut.wav"},
+        {55,    S2,     "sot_26_lut.wav"},
+        {56,    S2,     "sot_27_lut.wav"},
+        {57,    S2,     "sot_28_lut.wav"},
+        {58,    S2,     "sot_29_lut.wav"},
+    },
+};
+
+
+//------------------------------------------------------------------------------
+
+
+// Test item table. 
+//   index 1: L1, L2
+//   index 2: item number
+TestItem[..][..] test_items =
+{
+    // FAMIL for group L1, NOVEL for group L2
+    {
+        {1,     S1,     "tep_01_lut.wav"},
+        {2,     S1,     "tep_02_lut.wav"},
+        {3,     S1,     "tep_03_lut.wav"},
+        {4,     S2,     "sot_01_jik.wav"},
+        {5,     S2,     "sot_02_jik.wav"},
+        {6,     S2,     "sot_03_jik.wav"},
+    },
+    // FAMIL for group L2, NOVEL for group L1
+    {
+        {1,     S1,     "tep_01_jik.wav"},
+        {2,     S1,     "tep_02_jik.wav"},
+        {3,     S1,     "tep_03_jik.wav"},
+        {4,     S2,     "sot_01_lut.wav"},
+        {5,     S2,     "sot_02_lut.wav"},
+        {6,     S2,     "sot_03_lut.wav"},
+    },
+};
+
+
+// Test item table list selection indexes. One for each test trial.
+TestGroup[..] test_list_order =
+{
+    L1,
+    L1,
+    L1,
+    L1,
+    L2,
+    L2,
+    L2,
+    L2,
+};

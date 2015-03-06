@@ -1,0 +1,43 @@
+/******************************************************************************\
+FILE:           participant.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Provides participant database record field create and check functions.
+
+
+HISTORY:
+2013-01-11 TV   Created.
+
+\******************************************************************************/
+
+
+// Creates required participant record fields.
+void create_participant_fields()
+{
+    expdb.participant.add_string_field("name");
+    expdb.participant.add_enum_field("sex", "male|female");
+    expdb.participant.add_date_field("birthdate");
+//    expdb.participant.add_int_field("months");
+//    expdb.participant.add_bool_field("dyslexiarisk");
+}
+
+
+// Checks current values of participant record fields.
+int check_participant_fields()
+{
+    if (!expdb.participant.has_enum_field("sex")) return ERROR;
+    if (!expdb.participant.has_date_field("birthdate")) return ERROR;
+//    if (!expdb.participant.has_int_field("months")) return ERROR;
+//    if (!expdb.participant.has_bool_field("dyslexiarisk")) return ERROR;
+
+    if (expdb.participant.get_enum_field("sex") == "") return ERROR;
+    if (expdb.participant.get_date_field("birthdate") < 1900-01-01) return ERROR;
+    if (expdb.participant.get_date_field("birthdate") >= now()) return ERROR;
+//    if (expdb.participant.get_int_field("months") < 12) return ERROR;
+//    if (expdb.participant.get_int_field("months") > 20) return ERROR;
+
+    return OK;
+}

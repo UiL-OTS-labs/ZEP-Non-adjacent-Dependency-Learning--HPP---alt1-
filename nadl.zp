@@ -1,0 +1,81 @@
+/******************************************************************************\
+FILE:           nadl.zp
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Implementation of task: Non-adjacent Dependency Learning (HPP)
+
+For more information on the nadl task see readme.txt in the 
+test folder.
+
+
+Global structure of experiment:
+
+  - welcome
+
+  - phase 1 (see subfolder test)
+
+  - thankyou
+
+
+HISTORY:
+2013-07-03 TV   Created.
+
+\******************************************************************************/
+
+requires 1.10;
+
+import std_baby_windows0;
+import std_sound_playback;
+
+import test::task;
+
+
+Experiment experiment
+{
+    on_event:entry()
+    {
+    }
+
+
+    on_event:message()
+    {
+        // On Ctrl+F4 jump unconditionally to the thank-you part.
+        if (message_sender == control && message_arg == SYS_STOP)
+        {
+            control.mark_experiment_aborted();
+            thankyou.enter();
+        }
+    }
+
+
+    Part phase1
+    {
+        on_event:entry()
+        {
+            test::action(this);
+        }
+    }
+
+
+    Part thankyou
+    {
+        on_event:entry()
+        {
+            control.end_experiment();   // Check-in session.
+
+            // In 2s start playing a (baby song) sound file.
+            sound_playback.playback.set_scaling(1.0);
+            sound_playback.play(stimuli_dir() + "sounds/music.wav", 
+                now() + 2s);
+
+            control.target = this;
+            control.disable_keys();
+//            control.enable_key(KEY_Return, CONTINUE);
+//            control.enable_key(' ', CONTINUE);
+            control.enable_key(KEY_Escape, CONTINUE);
+        }
+    }
+}

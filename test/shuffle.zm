@@ -1,0 +1,201 @@
+/******************************************************************************\
+FILE:           shuffle.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Item table shuffling functions.
+
+
+HISTORY:
+2013-01-11 TV   Created.
+
+\******************************************************************************/
+
+
+// Composes fam_items table from fam_items1 and fam_items2.
+int setup_fam_items()
+{
+    TestGroup lang = selected_group;
+    TestGroup altlang = selected_group == L1 ? L2 : L1;
+    
+    // Shuffle fam_items1[lang] according to following criterion:
+    //   - The maximum number of subsequent same type items is 3.
+
+    int nitems = fam_items1[lang].size;
+
+    // Depending on criteria and table contents it may happen that it takes
+    // several attempts to make the shuffling succeed. We'll try it 100 times
+    // before giving up.
+    int nattempts;
+    bool again = true;
+    while (again && ++nattempts < 100) 
+    {
+        // First shuffle the entire item table.
+        again = false;
+        fam_items1[lang].shuffle(0, -1);
+
+        // Walk over the table and check for items conflicting with the
+        // criterion. If an item conflicts, then swap it randomly with one 
+        // of the items not yet looked at.
+        int n = 3;
+        while (n < nitems)
+        {
+            int nitemswaps;
+            while (
+                fam_items1[lang][n].type == fam_items1[lang][n-1].type &&
+                fam_items1[lang][n].type == fam_items1[lang][n-2].type &&
+                fam_items1[lang][n].type == fam_items1[lang][n-3].type)
+            {
+                if (n+1 == nitems || ++nitemswaps == 10) 
+                {
+                    again = true;
+                    break;
+                }
+                fam_items1[lang].swap(n, random(n, nitems - n));
+            }
+            if (again) break;
+            n++;
+        }
+    }
+
+    if (again)
+    {
+        println("Unable to compose fam_items according to criteria.");
+        return ERROR;
+    }
+
+    // Shuffle fam_items2[altlang] (no restrictions on order).
+    fam_items2[altlang].shuffle(0, -1);
+
+    // Fill fam_items from fam_items1[lang] and fam_items2[altlang]. The 
+    // fam_items2[altlang] items are put at fixed positions (see code).
+    int nitems1 = fam_items1[lang].size;
+    int nitems2 = fam_items2[altlang].size;
+    nitems = nitems1 + nitems2;
+    fam_items.size = nitems;
+    int n1;
+    int n2;
+    int m = 1;
+    while (m <= nitems)
+    {
+        if (m == 5 || m == 10 || m == 17 || m == 20 || m == 25 || 
+                m == 34 || m == 39 || m == 46 || m == 49 || m == 55)
+        {
+            fam_items[m-1] = fam_items2[altlang][n2];
+            n2++;
+        }
+        else
+        {
+            fam_items[m-1] = fam_items1[lang][n1];
+            n1++;
+        }
+        m++;
+    }
+
+    return OK;
+}
+
+
+// Prints test_items table contents in terminal window.
+void dump_fam_items()
+{
+    int nitems = fam_items.size;
+
+    int n;
+    while (n < nitems)
+    {
+        println(string(fam_items[n].id) + "\t" +
+            string(fam_items[n].type) + "\t" +
+            string(fam_items[n].sndfn));
+        n++;
+    }
+    println("");
+}
+
+
+//------------------------------------------------------------------------------
+
+
+// Shuffles specified block in test_items table (no restrictions on item order).
+int shuffle_test_items(int blk)
+{
+    test_items[blk].shuffle(0, -1);
+
+    return OK;
+}
+
+
+//------------------------------------------------------------------------------
+
+
+// Shuffles test_list_order table according to following criterion:
+//   - The first item must be familiar.
+//   - The maximum number of subsequent novel items is 2.
+int shuffle_test_list_order()
+{
+    int nitems = test_list_order.size;
+    TestGroup familiar = selected_group;
+    TestGroup novel = (selected_group == L1) ? L2 : L1;
+
+    // Depending on criteria and table contents it may happen that it takes
+    // several attempts to make the shuffling succeed. We'll try it 100 times
+    // before giving up.
+    int nattempts;
+    bool again = true;
+    while (again && ++nattempts < 100) 
+    {
+        // First shuffle the entire item table.
+        again = false;
+        test_list_order.shuffle(0, -1);
+
+        // First item must be familiar, so reshuffle if necessary.
+        while (test_list_order[0] != familiar)
+            test_list_order.shuffle(0, -1);
+
+        // Walk over the table and check for items conflicting with the
+        // criterion. If an item conflicts, then swap it randomly with one 
+        // of the items not yet looked at.
+        int n = 2;
+        while (n < nitems)
+        {
+            int nitemswaps;
+            while (
+                test_list_order[n] == novel && 
+                test_list_order[n-1] == novel && 
+                test_list_order[n-2] == novel)
+            {
+                if (n+1 == nitems || ++nitemswaps == 10) 
+                {
+                    again = true;
+                    break;
+                }
+                test_list_order.swap(n, random(n, nitems - n));
+            }
+            if (again) break;
+            n++;
+        }
+    }
+
+    if (again)
+        println("Unable to shuffle test_list_order according to criteria. "
+            "Check table and/or criteria.");
+
+    return again ? ERROR : OK;
+}
+
+
+// Prints test_list_order table contents in terminal window.
+void dump_test_list_order()
+{
+    int nitems = test_list_order.size;
+
+    int n;
+    while (n < nitems)
+    {
+        println(string(test_list_order[n]));
+        n++;
+    }
+    println("");
+}
