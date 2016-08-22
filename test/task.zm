@@ -36,8 +36,8 @@ import test_handler;
 
 // At the UiL-OTS babylab the go button is button number 3, the halt button
 // is button number 4.
-const int   BUTTON_BOX_GO_BUTTON    = 3;
-const int   BUTTON_BOX_HALT_BUTTON  = 4;
+const int   BUTTON_BOX_GO_BUTTON    = 0;
+const int   BUTTON_BOX_HALT_BUTTON  = 3;
 
 
 Block task
