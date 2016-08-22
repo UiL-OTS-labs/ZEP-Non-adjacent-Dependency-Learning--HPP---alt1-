@@ -25,7 +25,7 @@ HISTORY:
 
 \******************************************************************************/
 
-requires 1.10;
+requires 1.12;
 
 import std_baby_windows0;
 import std_sound_playback;
